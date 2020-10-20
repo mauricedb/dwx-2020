@@ -1,7 +1,14 @@
 // Based on https://gist.github.com/ryanflorence/e10cc9dbc0e259759ec942ba82e5b57c
 
 import React from 'react';
-import { Link, LinkProps, NavLink, NavLinkProps } from 'react-router-dom';
+import {
+  Link,
+  LinkProps,
+  matchPath,
+  NavLink,
+  NavLinkProps,
+  useLocation,
+} from 'react-router-dom';
 
 export function createFetchResource(mapKeyToUrl = (key: string) => key) {
   return createResource(async (key) => {
@@ -52,9 +59,11 @@ export function createResource(getPromise: (key: string) => Promise<unknown>) {
     }
   }
 
-  function clear(key: string) {
-    if (key) {
-      delete cache[key];
+  function clear(keys?: string | string[]) {
+    if (keys) {
+      new Array<string>().concat(keys).forEach((key) => {
+        delete cache[key];
+      });
     } else {
       cache = {};
     }
@@ -63,15 +72,53 @@ export function createResource(getPromise: (key: string) => Promise<unknown>) {
   type ResourceLinkProps = { cacheKeys: string | string[] } & LinkProps;
 
   function ResourceLink({ cacheKeys, ...props }: ResourceLinkProps) {
+    const location = useLocation();
     const _preload = () => preload(cacheKeys);
-    return <Link onMouseEnter={_preload} onFocus={_preload} {...props} />;
+    const _clear = () => {
+      if (typeof props.to === 'string') {
+        const activeRoute = !!matchPath(location.pathname, props.to);
+
+        if (!activeRoute) {
+          return clear(cacheKeys);
+        }
+      }
+    };
+    return (
+      <Link
+        onMouseEnter={_preload}
+        onMouseLeave={_clear}
+        onFocus={_preload}
+        onBlur={_clear}
+        {...props}
+      />
+    );
   }
 
   type ResourceNavLinkProps = { cacheKeys: string | string[] } & NavLinkProps;
 
   function ResourceNavLink({ cacheKeys, ...props }: ResourceNavLinkProps) {
+    const location = useLocation();
+
     const _preload = () => preload(cacheKeys);
-    return <NavLink onMouseEnter={_preload} onFocus={_preload} {...props} />;
+    const _clear = () => {
+      if (typeof props.to === 'string') {
+        const activeRoute = !!matchPath(location.pathname, props.to);
+
+        if (!activeRoute) {
+          return clear(cacheKeys);
+        }
+      }
+    };
+
+    return (
+      <NavLink
+        onMouseEnter={_preload}
+        onMouseLeave={_clear}
+        onFocus={_preload}
+        onBlur={_clear}
+        {...props}
+      />
+    );
   }
 
   return { preload, read, clear, Link: ResourceLink, NavLink: ResourceNavLink };
