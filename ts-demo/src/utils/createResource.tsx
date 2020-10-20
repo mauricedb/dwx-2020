@@ -1,10 +1,11 @@
 // Based on https://gist.github.com/ryanflorence/e10cc9dbc0e259759ec942ba82e5b57c
 
-import React from "react";
-import { Link, LinkProps, NavLink, NavLinkProps } from "react-router-dom";
+import React from 'react';
+import { Link, LinkProps, NavLink, NavLinkProps } from 'react-router-dom';
 
-export function createFetchResource() {
-  return createResource(async (url) => {
+export function createFetchResource(mapKeyToUrl = (key: string) => key) {
+  return createResource(async (key) => {
+    const url = mapKeyToUrl(key);
     const rsp = await fetch(url);
 
     if (!rsp.ok) {

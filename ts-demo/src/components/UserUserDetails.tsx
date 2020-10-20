@@ -10,9 +10,7 @@ type RouteParams = {
 
 const UserUserDetails: React.FC = () => {
   const { userId } = useParams<RouteParams>();
-  const data = resource.read<User>(
-    `https://the-problem-solver-sample-data.azurewebsites.net/accounts/${userId}`
-  );
+  const data = resource.read<User>(`/accounts/${userId}`);
 
   return (
     <div>

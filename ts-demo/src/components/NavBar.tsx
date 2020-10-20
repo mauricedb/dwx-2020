@@ -12,7 +12,7 @@ const NavBar: React.FC = () => (
         to="/movies"
         className="nav-link"
         activeClassName="active"
-        cacheKeys="https://the-problem-solver-sample-data.azurewebsites.net/top-rated-movies"
+        cacheKeys="/top-rated-movies"
       >
         Movies
       </resource.NavLink>
@@ -20,7 +20,7 @@ const NavBar: React.FC = () => (
         to="/users"
         className="nav-link"
         activeClassName="active"
-        cacheKeys="https://the-problem-solver-sample-data.azurewebsites.net/accounts"
+        cacheKeys="/accounts"
       >
         Users
       </resource.NavLink>

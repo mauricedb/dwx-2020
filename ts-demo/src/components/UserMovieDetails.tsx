@@ -11,9 +11,7 @@ type RouteParams = {
 
 const UserMovieDetails: React.FC = () => {
   const { movieId } = useParams<RouteParams>();
-  const data = resource.read<Movie>(
-    `https://the-problem-solver-sample-data.azurewebsites.net/top-rated-movies/${movieId}`
-  );
+  const data = resource.read<Movie>(`/top-rated-movies/${movieId}`);
 
   return (
     <div>

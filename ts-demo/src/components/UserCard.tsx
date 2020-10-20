@@ -18,8 +18,8 @@ const UserCard: React.FC<Props> = ({ user }) => (
           to={`/user/${user.id}/movie/${user.favorite_movie}`}
           className="btn btn-primary"
           cacheKeys={[
-            `https://the-problem-solver-sample-data.azurewebsites.net/top-rated-movies/${user.favorite_movie}`,
-            `https://the-problem-solver-sample-data.azurewebsites.net/accounts/${user.id}`,
+            `/top-rated-movies/${user.favorite_movie}`,
+            `/accounts/${user.id}`,
           ]}
         >
           Details
