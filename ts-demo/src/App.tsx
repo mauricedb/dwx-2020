@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+import './components/Loading';
+import Loading from './components/Loading';
+
+import NavBar from './components/NavBar';
+const Movies = React.lazy(() => import('./components/Movies'));
+const Users = React.lazy(() => import('./components/Users'));
+const UserDetails = React.lazy(() => import('./components/UserDetails'));
+
+const App: React.FC = () => (
+  <BrowserRouter>
+    <div className="container">
+      <NavBar />
+      <React.Suspense fallback={<Loading />}>
+        <Switch>
+          <Route path="/movies">
+            <Movies />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/user/:userId/movie/:movieId">
+            <UserDetails />
+          </Route>
+        </Switch>
+      </React.Suspense>
     </div>
-  );
-}
+  </BrowserRouter>
+);
 
 export default App;

@@ -1,12 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ErrorBoundary } from 'react-error-boundary';
+import 'bootstrap/dist/css/bootstrap.css';
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Loading from './components/Loading';
+import ErrorDisplay from './components/ErrorDisplay';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <React.Suspense fallback={<Loading />}>
+      <ErrorBoundary
+        fallbackRender={({ error }) => <ErrorDisplay error={error} />}
+      >
+        <App />
+      </ErrorBoundary>
+    </React.Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );
